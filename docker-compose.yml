@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  mongo:
+    image: mongo:4.1.5
+    restart: always
+    volumes:
+      - mdb-data:/data/db
+    # The application assumes passwordless access, which it will use to
+    # create its own users/databases
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
+
+  formio:
+    build: .
+    # The app will restart until Mongo is listening
+    restart: always
+    ports:
+      - 3001:3001
+    environment:
+      DEBUG:
+      # DEBUG: formio:*
+      UNATTENDED_INSTALL: 1
+      HOST: "${HOST}"
+      PROTOCOL: "${PROTOCOL}"
+      DOMAIN: "${PROTOCOL}://${HOST}:3001"
+      ROOT_EMAIL: "${ROOT_EMAIL}"
+      ROOT_PASSWORD: "${ROOT_PASSWORD}"
+      MONGO: mongodb://:@mongo:27017/formioapp
+      MONGOSECRET: "${MONGOSECRET}"
+      JWTSECRET: "${JWTSECRET}"
+    links:
+      - mongo
+
+volumes:
+  mdb-data:
