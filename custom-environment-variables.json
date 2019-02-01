@@ -1,0 +1,11 @@
+{
+  "host": "HOST:3001",
+  "protocol": "PROTOCOL",
+  "domain": "DOMAIN",
+  "basePath": "",
+  "mongo": "MONGO",
+  "mongoSecret": "MONGOSECRET",
+  "jwt": {
+    "secret": "JWTSECRET"
+  }
+}
